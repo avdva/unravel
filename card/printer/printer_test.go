@@ -35,7 +35,7 @@ func TestPrinter(t *testing.T) {
 
 	h := card.EventHeader{
 		SessionID:  "1",
-		WebsiteUrl: "google.com",
+		WebsiteURL: "google.com",
 	}
 	p.OnResize(h, card.Dimension{800, 600}, card.Dimension{1920, 1018})
 	bytes, err := ioutil.ReadAll(buf)
@@ -58,7 +58,7 @@ func TestPrinter(t *testing.T) {
 	r.Equal([]byte("{WebsiteUrl:google.com SessionId:1 ResizeFrom:{Width:800 Height:600} ResizeTo:{Width:1920 Height:1018} CopyAndPaste:map[form1:true] FormCompletionTime:1313}, hash = 0E22B00D\n"), bytes)
 
 	h.SessionID = "2"
-	h.WebsiteUrl = "stackoverflow.com"
+	h.WebsiteURL = "stackoverflow.com"
 
 	p.OnResize(h, card.Dimension{1920, 1018}, card.Dimension{800, 600})
 	bytes, err = ioutil.ReadAll(buf)

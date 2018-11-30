@@ -19,7 +19,7 @@ type request struct {
 	SessionID string `json:"sessionId"`
 
 	Pasted     *bool      `json:"pasted"`
-	FormId     *string    `json:"formId"`
+	FormID     *string    `json:"formId"`
 	ResizeFrom *dimension `json:"resizeFrom"`
 	ResizeTo   *dimension `json:"resizeTo"`
 	Time       *int       `json:"time"`

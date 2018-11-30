@@ -4,7 +4,7 @@ package card
 
 // EventHeader is a common part for all events.
 type EventHeader struct {
-	WebsiteUrl string
+	WebsiteURL string
 	SessionID  string
 }
 

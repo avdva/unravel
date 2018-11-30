@@ -59,13 +59,13 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) handleRequest(req *request) {
 	header := card.EventHeader{
-		WebsiteUrl: req.URL,
+		WebsiteURL: req.URL,
 		SessionID:  req.SessionID,
 	}
 	switch req.EventType {
 	case evCopyPaste:
-		if req.FormId != nil && req.Pasted != nil {
-			s.handler.OnCopyPaste(header, *req.FormId, *req.Pasted)
+		if req.FormID != nil && req.Pasted != nil {
+			s.handler.OnCopyPaste(header, *req.FormID, *req.Pasted)
 		}
 	case evWindowResize:
 		if req.ResizeFrom != nil && req.ResizeTo != nil {

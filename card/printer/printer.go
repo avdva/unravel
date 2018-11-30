@@ -107,7 +107,7 @@ func (ph *PrintHandler) ensureData(h card.EventHeader) cardData {
 	data, found := ph.data[h.SessionID]
 	if !found {
 		data.SessionId = h.SessionID
-		data.WebsiteUrl = h.WebsiteUrl
+		data.WebsiteUrl = h.WebsiteURL
 		data.CopyAndPaste = make(map[string]bool)
 	}
 	return data

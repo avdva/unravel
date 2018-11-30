@@ -21,7 +21,7 @@ func main() {
 	flag.Parse()
 	srv := server.New(*flagAddr, makeHandler(*flagHash))
 	go func() {
-		c := make(chan os.Signal)
+		c := make(chan os.Signal, 1)
 		signal.Notify(c, syscall.SIGINT, syscall.SIGTERM)
 		<-c
 		srv.Stop()
