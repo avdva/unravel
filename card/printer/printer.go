@@ -27,7 +27,7 @@ type Logger interface {
 // StringHasher returns hash of a string.
 type StringHasher func(s string) []byte
 
-// PrintHandler processed card events and prints them to 'out'.
+// PrintHandler processes card events and prints them to 'out'.
 type PrintHandler struct {
 	out    io.Writer
 	hasher StringHasher
@@ -49,7 +49,7 @@ func New(out io.Writer, hasher StringHasher, l Logger) *PrintHandler {
 // OnResize is a window resize callback.
 func (ph *PrintHandler) OnResize(h card.EventHeader, from, to card.Dimension) {
 	data := ph.doResize(h, from, to)
-	ph.doPrint(fmt.Sprintln(data))
+	ph.doPrint(fmt.Sprintf("%+v\n", data))
 }
 
 func (ph *PrintHandler) doResize(h card.EventHeader, from, to card.Dimension) cardData {
@@ -65,7 +65,7 @@ func (ph *PrintHandler) doResize(h card.EventHeader, from, to card.Dimension) ca
 // OnCopyPaste is a copt/paste event callback.
 func (ph *PrintHandler) OnCopyPaste(h card.EventHeader, form string, pasted bool) {
 	data := ph.doCopyPaste(h, form, pasted)
-	ph.doPrint(fmt.Sprintln(data))
+	ph.doPrint(fmt.Sprintf("%+v\n", data))
 }
 
 func (ph *PrintHandler) doCopyPaste(h card.EventHeader, form string, pasted bool) cardData {
@@ -77,10 +77,10 @@ func (ph *PrintHandler) doCopyPaste(h card.EventHeader, form string, pasted bool
 	return copyData(&data)
 }
 
-// OnSubmit is a submit button handler.
+// OnSubmit is a submit button callback.
 func (ph *PrintHandler) OnSubmit(h card.EventHeader, time int) {
 	data := ph.doSubmit(h, time)
-	ph.doPrint(fmt.Sprintf("%v, hash = %X\n", data, ph.hasher(data.WebsiteUrl)))
+	ph.doPrint(fmt.Sprintf("%+v, hash = %X\n", data, ph.hasher(data.WebsiteUrl)))
 }
 
 func (ph *PrintHandler) doSubmit(h card.EventHeader, time int) cardData {
