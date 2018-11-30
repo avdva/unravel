@@ -4,6 +4,7 @@ package printer
 
 import (
 	"bytes"
+	"errors"
 	"io/ioutil"
 	"testing"
 
@@ -12,6 +13,20 @@ import (
 
 	"github.com/stretchr/testify/require"
 )
+
+type errorWriter struct{}
+
+func (e *errorWriter) Write(buff []byte) (int, error) {
+	return 0, errors.New("errorWriter")
+}
+
+type logger struct {
+	e error
+}
+
+func (l *logger) Printf(s string, args ...interface{}) {
+	l.e = args[0].(error)
+}
 
 func TestPrinter(t *testing.T) {
 	r := require.New(t)
@@ -54,4 +69,9 @@ func TestPrinter(t *testing.T) {
 	bytes, err = ioutil.ReadAll(buf)
 	r.NoError(err)
 	r.Equal([]byte("{WebsiteUrl:stackoverflow.com SessionId:2 ResizeFrom:{Width:1920 Height:1018} ResizeTo:{Width:800 Height:600} CopyAndPaste:map[] FormCompletionTime:123}, hash = 0180272D\n"), bytes)
+
+	l := &logger{}
+	p = New(&errorWriter{}, hash.MakeHasher("pjw"), l)
+	p.OnSubmit(h, 123)
+	r.Equal("errorWriter", l.e.Error())
 }

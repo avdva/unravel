@@ -42,6 +42,7 @@ func New(out io.Writer, hasher StringHasher, l Logger) *PrintHandler {
 	return &PrintHandler{
 		out:    out,
 		hasher: hasher,
+		l:      l,
 		data:   make(map[string]cardData),
 	}
 }
@@ -58,7 +59,7 @@ func (ph *PrintHandler) doResize(h card.EventHeader, from, to card.Dimension) ca
 	data := ph.ensureData(h)
 	data.ResizeFrom = from
 	data.ResizeTo = to
-	ph.data[h.SessionID] = data
+	ph.writeData(data)
 	return copyData(&data)
 }
 
@@ -73,7 +74,7 @@ func (ph *PrintHandler) doCopyPaste(h card.EventHeader, form string, pasted bool
 	defer ph.m.Unlock()
 	data := ph.ensureData(h)
 	data.CopyAndPaste[form] = pasted
-	ph.data[h.SessionID] = data
+	ph.writeData(data)
 	return copyData(&data)
 }
 
@@ -88,7 +89,7 @@ func (ph *PrintHandler) doSubmit(h card.EventHeader, time int) cardData {
 	defer ph.m.Unlock()
 	data := ph.ensureData(h)
 	data.FormCompletionTime = time
-	ph.data[h.SessionID] = data
+	ph.writeData(data)
 	return copyData(&data)
 }
 
@@ -110,6 +111,12 @@ func (ph *PrintHandler) ensureData(h card.EventHeader) cardData {
 		data.CopyAndPaste = make(map[string]bool)
 	}
 	return data
+}
+
+// writeData stores cardData.
+// needs ph.m to be Locked.
+func (ph *PrintHandler) writeData(data cardData) {
+	ph.data[data.SessionId] = data
 }
 
 // copyData copies the entire structure.
