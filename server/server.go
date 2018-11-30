@@ -10,7 +10,7 @@ import (
 	"github.com/avdva/unravel/card"
 )
 
-// Server is a HTTP server, that handles JSON requests.
+// Server is an HTTP server, that handles JSON requests.
 type Server struct {
 	srv     *http.Server
 	handler card.Handler
@@ -33,7 +33,7 @@ func New(addr string, handler card.Handler) *Server {
 	return result
 }
 
-// Serve starts processing loop.
+// Serve starts processing.
 func (s *Server) Serve() error {
 	if err := s.srv.ListenAndServe(); err != http.ErrServerClosed {
 		return err
@@ -41,12 +41,12 @@ func (s *Server) Serve() error {
 	return nil
 }
 
-// Stop shutdowns HTTP server.
+// Stop shutdowns the server.
 func (s *Server) Stop() {
 	s.srv.Shutdown(context.Background())
 }
 
-// ServeHTTP is a HTTP requests handler.
+// ServeHTTP is an HTTP requests handler.
 func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	req, err := decodeRequest(r.Body)
 	if err != nil {
