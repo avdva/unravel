@@ -87,14 +87,11 @@
         'websiteUrl': document.location.origin,
         'sessionId': '123123-123123-12312312'
       }
-      // link two objects via ...
       let query = ({ ...params, ...request });
 
-      // standard request
       let xmlhttp = new XMLHttpRequest();
       xmlhttp.open("POST", url, true);
       xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-      // convert to string and send.
       xmlhttp.send(JSON.stringify(query));
     }
 
@@ -103,11 +100,9 @@
     }
 
     startTimeTaken = () => {
-      // unsubscribe from keypress eevents.
       inputs.forEach(i => {
         document.getElementById(i).removeEventListener('keypress', startTimeTaken);
       })
-      // start 1s timer.
       setInterval(increaseTimer, 1000);
     }
 
@@ -119,7 +114,6 @@
         formId: event.target.id
       })
     }
-    // delay from stackoverflow
     debounce = (func) => {
       let timer;
       return (event) => {
@@ -140,16 +134,13 @@
       })
       currentSize = newSize;
     }
-    // window resize handler
     window.addEventListener("resize", debounce(windowResize));
 
-    // form handlers
     inputs.forEach(i => {
       document.getElementById(i).addEventListener('keypress', startTimeTaken, false);
       document.getElementById(i).addEventListener('copy', copyPaste, false);
       document.getElementById(i).addEventListener('paste', copyPaste, false);
     })
-    // locates a form and install a submit handler.
     const form = document.getElementsByTagName('form')[0];
 
     form.addEventListener("submit", (event) => {

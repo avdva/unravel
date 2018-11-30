@@ -34,5 +34,6 @@ func makeHandler(hashAlg string) card.Handler {
 	if hasher == nil {
 		log.Fatal("invalid hash alg")
 	}
-	return printer.New(os.Stdout, hasher)
+	l := log.New(os.Stderr, "unravel", log.LstdFlags)
+	return printer.New(os.Stdout, hasher, l)
 }
